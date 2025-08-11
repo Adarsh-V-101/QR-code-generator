@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QR Code Generator & Scanner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>QR Code Generator & Scanner</h1>
+
+    <section class="card">
+      <h2>Generate QR Code</h2>
+      <input id="qrText" placeholder="Enter text or URL" />
+      <div class="row">
+        <button id="genBtn">Generate</button>
+        <button id="downloadQR" disabled>Download PNG</button>
+      </div>
+      <div id="qrcode" class="qrcode"></div>
+    </section>
+
+    <section class="card">
+      <h2>Scan QR Code (use camera)</h2>
+      <video id="video" playsinline></video>
+      <p id="scanResult">Result: <span class="muted">None</span></p>
+      <div class="row">
+        <button id="startScan">Start Scanning</button>
+        <button id="stopScan" disabled>Stop</button>
+      </div>
+    </section>
+
+    <footer class="muted">Built with qrcodejs & jsQR — works offline (generator) and uses camera for scanning.</footer>
+  </main>
+
+  <!-- Libraries (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
