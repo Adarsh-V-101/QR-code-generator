@@ -1,2 +1,2 @@
-# QR-code-generator
-simple project to generate qr code
+# Tools 
+a simple repositry for multiple basic tools
