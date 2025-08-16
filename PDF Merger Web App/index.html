@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Merger</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Merge PDFs</h2>
+        <input type="file" id="pdfInput" accept="application/pdf" multiple>
+        <br><br>
+        <button id="mergeBtn">Merge PDFs</button>
+    </div>
+
+    <!-- pdf-lib library -->
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script>
+        // Select button and input elements
+        const mergeBtn = document.getElementById('mergeBtn');
+        const pdfInput = document.getElementById('pdfInput');
+
+        mergeBtn.addEventListener('click', async () => {
+            const files = pdfInput.files;
+            if (!files.length) {
+                alert('Please select at least two PDF files.');
+                return;
+            }
+
+            // Create a new empty PDF document
+            const mergedPdf = await PDFLib.PDFDocument.create();
+
+            // Loop through selected PDFs
+            for (const file of files) {
+                const arrayBuffer = await file.arrayBuffer(); // Read PDF file as binary
+                const pdf = await PDFLib.PDFDocument.load(arrayBuffer); // Load PDF into pdf-lib
+
+                // Copy all pages from this PDF into the merged PDF
+                const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                copiedPages.forEach(page => mergedPdf.addPage(page));
+            }
+
+            // Save the merged PDF as a byte array
+            const mergedPdfBytes = await mergedPdf.save();
+
+            // Download merged PDF
+            const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'merged.pdf';
+            link.click();
+        });
+    </script>
+</body>
+</html>
