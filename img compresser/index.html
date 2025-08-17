@@ -1,161 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Sci-Fi Image Compressor</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background: radial-gradient(ellipse at center, #23243a 0%, #0a0a1a 100%);
-            color: #e0e0ff;
-            font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        h1 {
-            font-size: 2.5rem;
-            letter-spacing: 0.1em;
-            text-shadow: 0 0 10px #00ffe7, 0 0 20px #0055ff;
-            margin-bottom: 0.5em;
-        }
-        .container {
-            background: rgba(30, 32, 60, 0.85);
-            border-radius: 18px;
-            box-shadow: 0 0 32px #00ffe7a0, 0 0 8px #0055ff80;
-            padding: 2em 2.5em;
-            max-width: 400px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        label {
-            font-size: 1.1rem;
-            margin-bottom: 0.5em;
-            letter-spacing: 0.05em;
-        }
-        input[type="file"] {
-            margin-bottom: 1em;
-            border: none;
-            background: #23243a;
-            color: #e0e0ff;
-            padding: 0.5em;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        input[type="range"] {
-            width: 100%;
-            margin-bottom: 1em;
-            accent-color: #00ffe7;
-        }
-        .slider-value {
-            margin-bottom: 1em;
-            font-size: 1rem;
-            color: #00ffe7;
-            text-shadow: 0 0 4px #0055ff;
-        }
-        button {
-            background: linear-gradient(90deg, #00ffe7 0%, #0055ff 100%);
-            color: #23243a;
-            border: none;
-            border-radius: 8px;
-            padding: 0.7em 2em;
-            font-size: 1.1rem;
-            font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
-            cursor: pointer;
-            box-shadow: 0 0 8px #00ffe7a0;
-            transition: background 0.2s;
-            margin-bottom: 1em;
-        }
-        button:hover {
-            background: linear-gradient(90deg, #0055ff 0%, #00ffe7 100%);
-        }
-        .output {
-            margin-top: 1em;
-            text-align: center;
-        }
-        .output img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 0 16px #00ffe7a0;
-            margin-bottom: 0.5em;
-        }
-        .download-link {
-            display: inline-block;
-            margin-top: 0.5em;
-            color: #00ffe7;
-            text-decoration: underline;
-            font-size: 1rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Compressor</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Image Compression Portal</h1>
-    <div class="container">
-        <label for="imageInput">Upload Image</label>
-        <input type="file" id="imageInput" accept="image/*">
-        <label for="qualityRange">Compression Quality</label>
-        <input type="range" id="qualityRange" min="10" max="100" value="80">
-        <div class="slider-value">Quality: <span id="qualityValue">80</span>%</div>
-        <button id="compressBtn">Compress</button>
-        <div class="output" id="output"></div>
-    </div>
-    <script>
-        const imageInput = document.getElementById('imageInput');
-        const qualityRange = document.getElementById('qualityRange');
-        const qualityValue = document.getElementById('qualityValue');
-        const compressBtn = document.getElementById('compressBtn');
-        const output = document.getElementById('output');
-        let originalImage = null;
+  <main class="container">
+    <h1>📦 File Compressor</h1>
 
-        qualityRange.addEventListener('input', () => {
-            qualityValue.textContent = qualityRange.value;
-        });
+    <section class="card">
+      <input type="file" id="fileInput" accept="image/*,.pdf">
+      <button id="compressBtn">Compress</button>
+    </section>
 
-        imageInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    originalImage = ev.target.result;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                originalImage = null;
-                output.innerHTML = '';
-            }
-        });
+    <section class="card">
+      <p id="originalSize">Original Size: -</p>
+      <p id="compressedSize">Compressed Size: -</p>
+      <a id="downloadLink" href="#" download style="display:none;">Download Compressed File</a>
+    </section>
+  </main>
 
-        compressBtn.addEventListener('click', () => {
-            if (!originalImage) {
-                output.innerHTML = '<span style="color:#ff0055;">Please upload an image.</span>';
-                return;
-            }
-            const img = new Image();
-            img.src = originalImage;
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
-                const quality = qualityRange.value / 100;
-                const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
-                output.innerHTML = `
-                    <img src="${compressedDataUrl}" alt="Compressed Image">
-                    <br>
-                    <a class="download-link" href="${compressedDataUrl}" download="compressed.jpg">Download Compressed Image</a>
-                `;
-            };
-        });
-    </script>
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
