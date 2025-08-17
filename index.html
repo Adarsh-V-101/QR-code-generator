@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Online Code Editor</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.css">
+<link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Basic Online Code Editor</h1>
+    </header>
+    <div class="editor-container">
+        <div class="editor-panel">
+            <label for="html-code">HTML</label>
+            <textarea id="html-code" placeholder="Type HTML here..."></textarea>
+        </div>
+        <div class="editor-panel">
+            <label for="css-code">CSS</label>
+            <textarea id="css-code" placeholder="Type CSS here..."></textarea>
+        </div>
+        <div class="editor-panel">
+            <label for="js-code">JavaScript</label>
+            <textarea id="js-code" placeholder="Type JavaScript here..."></textarea>
+        </div>
+    </div>
+    <button id="run-btn">Run</button>
+    <div style="padding: 1em;">
+        <iframe id="output"></iframe>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.9/codemirror.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
